@@ -55,8 +55,8 @@ import com.google.gson.annotations.SerializedName;
  * This library can be used to leverage the postmarkapp.com functionality from a Java client
  * <p/>
  *
- * http://github.com/nt/postmark-java
- * forked from http://github.com/jaredholdcroft/postmark-java
+ * https://github.com/Imaginatio/postmark-java
+ * forked from https://github.com/bitformed/postmark-java
  */
 
 // Class that does the heavy lifting

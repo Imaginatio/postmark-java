@@ -40,8 +40,8 @@ import com.google.gson.JsonSerializer;
  * This library can be used to leverage the postmarkapp.com functionality from a Java client
  * <p/>
  * 
- * http://github.com/nt/postmark-java
- * forked from http://github.com/jaredholdcroft/postmark-java
+ * https://github.com/Imaginatio/postmark-java
+ * forked from https://github.com/bitformed/postmark-java
  */
 
 public class DateTimeTypeAdapter implements JsonSerializer<DateTime>, JsonDeserializer<DateTime> {

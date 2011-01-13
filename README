@@ -3,30 +3,11 @@ README
 
 This library allows you to leverage the Postmark REST API to send emails.
 
-Example usage:
+It is adapted from https://github.com/bitformed/postmark-java to include mavenification 
+and support for the Spring Framework.
 
-        List<NameValuePair> headers = new ArrayList<NameValuePair>();
+For now only SimpleMailMessage and MailSender are supported, but this can be easily 
+extended to support JavaMailSender and MimeMailMessage (with attachments). This work
+may be performed in the future, depending on my needs. 
 
-        headers.add(new NameValuePair("HEADER", "test"));
-
-        PostmarkMessage message = new PostmarkMessage("TO_ADDRESS",
-                "FROM_ADDRESS",
-                "REPLY_TO_ADDRESS",
-                null,
-                "SUBJECT",
-                "CONTENT",
-                false,
-                null,
-                headers);
-
-        PostmarkClient client = new PostmarkClient("POSTMARK_API_TEST");
-
-        try {
-            client.sendMessage(message);
-        } catch (PostmarkException pe) {
-            System.out.println("An error has occured : " + pe.getMessage());
-        }
-
-Dependencies:
-
-All dependencies are included in the lib folder
+Otherwise, feel free to improve the library ;)
