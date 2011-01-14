@@ -4,7 +4,8 @@
 	<groupId>com.postmark</groupId>
 	<artifactId>postmark-client</artifactId>
 	<packaging>jar</packaging>
-
+	<version>0.2.SNAPSHOT</version>
+    
 	<properties>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,8 +44,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 	</dependencies>
-
-	<version>0.1</version>
+    
 	<build>
 		<plugins>
 			<plugin>
@@ -52,7 +52,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<encoding>UTF8</encoding>
+					<encoding>UTF-8</encoding>
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>

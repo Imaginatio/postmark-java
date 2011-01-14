@@ -19,18 +19,19 @@ public class SimpleMailMessageAdapterTest {
         gsonBuilder.registerTypeAdapter(PostmarkMessage.class, new SimpleMailMessageAdapter());
     }
 
-	
+
+
 	@Test
 	public void testSerializeSimpleMailMessage() {
 		SimpleMailMessage m = new SimpleMailMessage();
 		m.setSubject("Test");
 		m.setText("This is a test email");
 		m.setFrom("nicolas@gmail.com");
-		m.setTo(new String[]{"<Your name here> you@gmail.com", "him@gmail.com"});
-		assertEquals("{\"From\":\"nicolas@gmail.com\",\"To\":\"<Your name here> you@gmail.com,him@gmail.com\",\"Subject\":\"Test\",\"TextBody\":\"This is a test email\"}",
+		m.setTo(new String[]{"you@gmail.com", "him@gmail.com"});
+		assertEquals("{\"From\":\"nicolas@gmail.com\",\"To\":\"you@gmail.com,him@gmail.com\",\"Subject\":\"Test\",\"TextBody\":\"This is a test email\"}",
 				gsonBuilder.create().toJson(m));
 	}
-	
+
 	@Test(expected=MailParseException.class)
 	public void testMissingParam() {
 		SimpleMailMessage m = new SimpleMailMessage();
@@ -39,7 +40,7 @@ public class SimpleMailMessageAdapterTest {
 		m.setFrom("nicolas@gmail.com");
 		gsonBuilder.create().toJson(m);
 	}
-	
+
 	@Test
 	public void testSerializePostMarkMessage() {
 		PostmarkMessage m = new PostmarkMessage();

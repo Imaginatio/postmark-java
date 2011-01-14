@@ -23,6 +23,7 @@
 package com.postmark;
 
 import java.lang.reflect.Type;
+import java.util.Formatter;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.joda.time.DateTime;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailParseException;
@@ -62,17 +64,19 @@ import com.google.gson.annotations.SerializedName;
 // Class that does the heavy lifting
 public class PostmarkMailSender implements MailSender {
 
-    private static Logger logger = Logger.getLogger("com.postmark.java");
+    private static Logger logger = Logger.getLogger("com.postmark");
     private String serverToken;
 
-    private static GsonBuilder gsonBuilder = new GsonBuilder();
+    private static Gson gson;
 
     static {
-        gsonBuilder.setPrettyPrinting();
+    	GsonBuilder gsonBuilder = new GsonBuilder();
+//        gsonBuilder.setPrettyPrinting();
     	gsonBuilder.disableHtmlEscaping();
         gsonBuilder.registerTypeAdapter(SimpleMailMessage.class, new SimpleMailMessageAdapter());
         gsonBuilder.registerTypeAdapter(PostmarkMessage.class, new SimpleMailMessageAdapter());
         gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter());
+        gson = gsonBuilder.create();
         logger.addHandler(new ConsoleHandler());
         logger.setLevel(Level.ALL);
     }
@@ -111,21 +115,22 @@ public class PostmarkMailSender implements MailSender {
 
 
             // Convert the message into JSON content
-            Gson gson = gsonBuilder.create();
-            String messageContents = gson.toJson(message);
+            
+            String messageContents = escapeUnicode(gson.toJson(message));
             logger.info("Message contents: " + messageContents);
 
             // Add JSON as payload to post request
             StringEntity payload = new StringEntity(messageContents);
+            payload.setContentEncoding(HTTP.UTF_8);
             method.setEntity(payload);
-
+            
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
             try {
                 String response = httpClient.execute(method, responseHandler);
                 logger.info("Message response: " + response);
-                theResponse = gsonBuilder.create().fromJson(response, PostmarkResponse.class);
+                theResponse = gson.fromJson(response, PostmarkResponse.class);
                 theResponse.status = PostmarkResponseStatus.SUCCESS;
             } catch (HttpResponseException hre) {
                 switch(hre.getStatusCode()) {
@@ -166,6 +171,22 @@ public class PostmarkMailSender implements MailSender {
 	public void send(SimpleMailMessage[] simpleMessages) throws MailException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+
+	private static String escapeUnicode(String src) {
+		StringBuilder sb = new StringBuilder();
+		Formatter formatter = new Formatter(sb);
+		int l = src.length();
+		for(int i=0; i<l; i++) {
+			char c = src.charAt(i);
+			if(c > 127) {
+				sb.append("\\u");
+				formatter.format("%04x", (int)c);
+			} else
+				sb.append(c);
+		}
+		return sb.toString();
 	}
 	
 	
@@ -246,7 +267,7 @@ public class PostmarkMailSender implements MailSender {
 	}
 	
 	public static class SimpleMailMessageAdapter implements JsonSerializer<SimpleMailMessage> {
-
+		
 		@Override
 		public JsonElement serialize(SimpleMailMessage src, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject jsonO = new JsonObject();
@@ -274,7 +295,7 @@ public class PostmarkMailSender implements MailSender {
 			return jsonO;
 		}
 		
-		private String mergeMailAdresses(String[] adresses) {
+		private static String mergeMailAdresses(String[] adresses) {
 			StringBuilder sb = new StringBuilder();
 			for(int i=0;i<adresses.length;i++) {
 				sb.append(adresses[i]);
