@@ -11,3 +11,11 @@ extended to support JavaMailSender and MimeMailMessage (with attachments). This 
 may be performed in the future, depending on my needs. 
 
 Otherwise, feel free to improve the library ;)
+
+If you use maven, this project is hosted at 
+
+		<repository>
+			<id>Github Imaginatio</id>
+			<url>https://github.com/Imaginatio/Maven-repository/raw/master</url>
+		</repository>
+		
