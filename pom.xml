@@ -4,7 +4,7 @@
 	<groupId>com.postmark</groupId>
 	<artifactId>postmark-client</artifactId>
 	<packaging>jar</packaging>
-	<version>0.2.SNAPSHOT</version>
+	<version>0.2</version>
     
 	<properties>
 		<spring.version>3.0.5.RELEASE</spring.version>

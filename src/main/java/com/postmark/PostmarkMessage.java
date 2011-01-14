@@ -20,13 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package com.postmark;
-
-import org.springframework.mail.SimpleMailMessage;
-
-
-/**
- * Postmark for Java
+/* Postmark for Java / Spring
  * <p/>
  * This library can be used to leverage the postmarkapp.com functionality from a Java client
  * <p/>
@@ -35,13 +29,14 @@ import org.springframework.mail.SimpleMailMessage;
  * forked from https://github.com/bitformed/postmark-java
  */
 
-// Wrapper class for Postmark message
-public class PostmarkMessage extends SimpleMailMessage {
+package com.postmark;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+import org.springframework.mail.SimpleMailMessage;
+
+/**
+ * Wrapper class for Postmark message
+ */
+public class PostmarkMessage extends SimpleMailMessage {
 	
 	private String tag;
 
