@@ -1,10 +1,10 @@
 README
 ======
 
-This library allows you to leverage the Postmark REST API to send emails.
+This library allows you to leverage the [Postmark](http://postmarkapp.com) REST API to send emails.
 
-It is adapted from https://github.com/bitformed/postmark-java to include mavenification 
-and support for the Spring Framework.
+It is adapted from https://github.com/bitformed/postmark-java to include maven-ification, 
+simplification and support for the Spring Framework by reuse of its Mail classes.
 
 For now only SimpleMailMessage and MailSender are supported, but this can be easily 
 extended to support JavaMailSender and MimeMailMessage (with attachments). This work
@@ -24,5 +24,5 @@ To import this artifact add this to your dependencies
 	<dependency>
 		<groupId>com.postmark</groupId>
 		<artifactId>postmark-client</artifactId>
-		<version>0.2.1</version>
+		<version>0.3.0</version>
 	</dependency>

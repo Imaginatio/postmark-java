@@ -32,6 +32,8 @@
 package com.postmark;
 
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -126,10 +128,8 @@ public class PostmarkMailSender implements MailSender {
             StringEntity payload = new StringEntity(messageContents);
             payload.setContentEncoding(HTTP.UTF_8);
             method.setEntity(payload);
-            
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-
             try {
                 String response = httpClient.execute(method, responseHandler);
                 logger.log(Level.FINER, "Message response: " + response);
@@ -153,17 +153,14 @@ public class PostmarkMailSender implements MailSender {
                         theResponse.status = PostmarkResponseStatus.UNKNOWN;
                         theResponse.setMessage(hre.getMessage());
                         throw new MailSendException("Postmark returned: "+theResponse);
-
                 }
             }
 
-
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "There has been an error sending your email: " + e.getMessage());
-            throw new MailSendException("There has been an error sending your email", e);
-        }
-        finally {
-
+            logger.log(Level.SEVERE, "There has been an error sending email: " + e.getMessage());
+            throw new MailSendException("There has been an error sending email", e);
+        
+        } finally {
             httpClient.getConnectionManager().shutdown();
         }
 
@@ -172,10 +169,17 @@ public class PostmarkMailSender implements MailSender {
 
 	@Override
 	public void send(SimpleMailMessage[] simpleMessages) throws MailException {
-		///FIXME default naive, non-optimal implementation
-		// (breaks at first Exception, closes connection...)
-		for(SimpleMailMessage simpleMessage: simpleMessages)
-			send(simpleMessage);
+		///FIXME default naive, non-optimal implementation (sequentially opens simpleMessages.length HTTP connections...)
+		Map<Object, Exception> failedMessages = new LinkedHashMap<Object, Exception>();
+		for(SimpleMailMessage simpleMessage: simpleMessages) {
+			try {
+				send(simpleMessage);
+			} catch (MailException mex) {
+				failedMessages.put(simpleMessage, mex);
+			}
+		}
+		if(! failedMessages.isEmpty())
+			throw new MailSendException(failedMessages);
 	}
 	
 	
