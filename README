@@ -14,8 +14,15 @@ Otherwise, feel free to improve the library ;)
 
 If you use maven, this project is hosted at 
 
-		<repository>
-			<id>Github Imaginatio</id>
-			<url>https://github.com/Imaginatio/Maven-repository/raw/master</url>
-		</repository>
+	<repository>
+		<id>Github Imaginatio</id>
+		<url>https://github.com/Imaginatio/Maven-repository/raw/master</url>
+	</repository>
 		
+To import this artifact add this to your dependencies
+
+	<dependency>
+		<groupId>com.postmark</groupId>
+		<artifactId>postmark-client</artifactId>
+		<version>0.2.1</version>
+	</dependency>
