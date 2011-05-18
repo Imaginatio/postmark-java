@@ -276,15 +276,15 @@ public class PostmarkMailSender implements MailSender {
 		public JsonElement serialize(SimpleMailMessage src, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject jsonO = new JsonObject();
 			if(src.getFrom()==null)
-				throw new MailParseException("You must specify a from adress");
+				throw new MailParseException("You must specify a from address");
 			jsonO.addProperty("From", src.getFrom());
 			if(src.getTo()==null)
-				throw new MailParseException("You must specify a to adress");
-			jsonO.addProperty("To", mergeMailAdresses(src.getTo()));
+				throw new MailParseException("You must specify a to address");
+			jsonO.addProperty("To", mergeMailAddresses(src.getTo()));
 			if(src.getCc()!=null)
-				jsonO.addProperty("Cc", mergeMailAdresses(src.getCc()));
+				jsonO.addProperty("Cc", mergeMailAddresses(src.getCc()));
 			if(src.getBcc()!=null)
-				jsonO.addProperty("Bcc", mergeMailAdresses(src.getBcc()));
+				jsonO.addProperty("Bcc", mergeMailAddresses(src.getBcc()));
 			if(src.getSubject()==null)
 				throw new MailParseException("You must specify a Subject field");
 			jsonO.addProperty("Subject", src.getSubject());
@@ -299,11 +299,11 @@ public class PostmarkMailSender implements MailSender {
 			return jsonO;
 		}
 		
-		private static String mergeMailAdresses(String[] adresses) {
+		private static String mergeMailAddresses(String[] addresses) {
 			StringBuilder sb = new StringBuilder();
-			for(int i=0;i<adresses.length;i++) {
-				sb.append(adresses[i]);
-				if(i<adresses.length-1) sb.append(",");
+			for(int i=0;i<addresses.length;i++) {
+				sb.append(addresses[i]);
+				if(i<addresses.length-1) sb.append(",");
 			}
 			return sb.toString();
 		}
