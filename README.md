@@ -24,5 +24,5 @@ To import this artifact add this to your dependencies
 	<dependency>
 		<groupId>com.postmark</groupId>
 		<artifactId>postmark-client</artifactId>
-		<version>0.3.0</version>
+		<version>0.3.1</version>
 	</dependency>
