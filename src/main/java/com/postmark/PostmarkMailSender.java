@@ -275,35 +275,60 @@ public class PostmarkMailSender implements MailSender {
 		@Override
 		public JsonElement serialize(SimpleMailMessage src, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject jsonO = new JsonObject();
-			if(src.getFrom()==null)
+			if (src.getFrom() == null) {
 				throw new MailParseException("You must specify a from address");
+			}
 			jsonO.addProperty("From", src.getFrom());
-			if(src.getTo()==null)
+			if (src.getTo() == null) {
 				throw new MailParseException("You must specify a to address");
+			}
 			jsonO.addProperty("To", mergeMailAddresses(src.getTo()));
-			if(src.getCc()!=null)
+			if (src.getCc() != null) {
 				jsonO.addProperty("Cc", mergeMailAddresses(src.getCc()));
-			if(src.getBcc()!=null)
+			}
+			if (src.getBcc() != null) {
 				jsonO.addProperty("Bcc", mergeMailAddresses(src.getBcc()));
-			if(src.getSubject()==null)
+			}
+			if (src.getSubject() == null) {
 				throw new MailParseException("You must specify a Subject field");
+			}
 			jsonO.addProperty("Subject", src.getSubject());
-			if(src instanceof PostmarkMessage)
-				if(((PostmarkMessage) src).getTag()!=null)
-					jsonO.addProperty("Tag", ((PostmarkMessage) src).getTag());
-			if(src.getText()==null)
+
+			if (src instanceof PostmarkMessage) {
+				PostmarkMessage postmarkSrc = (PostmarkMessage) src;
+
+				if (postmarkSrc.getTag() != null) {
+					jsonO.addProperty("Tag", postmarkSrc.getTag());
+				}
+
+				if (postmarkSrc.getHtmlBody() != null) {
+					jsonO.addProperty("HtmlBody", postmarkSrc.getHtmlBody());
+				}
+
+				if (src.getText() == null && postmarkSrc.getHtmlBody() == null) {
+					throw new MailParseException("You must specify a Text field !");
+				}
+
+			} else  if (src.getText() == null) {
 				throw new MailParseException("You must specify a Text field");
+			}
+
 			jsonO.addProperty("TextBody", src.getText());
-			if(src.getReplyTo()!=null)
+
+			if (src.getReplyTo() != null) {
 				jsonO.addProperty("ReplyTo", src.getReplyTo());
+			}
+
 			return jsonO;
 		}
 		
 		private static String mergeMailAddresses(String[] addresses) {
 			StringBuilder sb = new StringBuilder();
-			for(int i=0;i<addresses.length;i++) {
+			for (int i = 0; i < addresses.length; i++) {
 				sb.append(addresses[i]);
-				if(i<addresses.length-1) sb.append(",");
+				if (i < addresses.length - 1) {
+					sb.append(",");
+				}
 			}
 			return sb.toString();
 		}

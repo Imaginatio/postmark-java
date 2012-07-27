@@ -40,6 +40,8 @@ public class PostmarkMessage extends SimpleMailMessage {
 	
 	private String tag;
 
+	private String htmlBody;
+
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
@@ -47,8 +49,14 @@ public class PostmarkMessage extends SimpleMailMessage {
 	public String getTag() {
 		return tag;
 	}
-	
-	
+
+	public String getHtmlBody() {
+		return htmlBody;
+	}
+
+	public void setHtmlBody(String htmlBody) {
+		this.htmlBody = htmlBody;
+	}
 
 }
 
