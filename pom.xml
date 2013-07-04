@@ -17,7 +17,6 @@
 			<artifactId>gson</artifactId>
 			<version>1.4</version>
 			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
